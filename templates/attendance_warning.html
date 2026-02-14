@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Warning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="success-container">
+    <div class="card">
+        <div style="font-size:60px; color:#e74c3c;">⚠</div>
+
+        <h1>Attendance Already Taken!</h1>
+
+        <p>
+            Today's attendance has already been recorded.
+            You cannot mark attendance twice for the same day.
+        </p>
+
+        <a href="/faculty">
+            <button class="btn">Back to Faculty Dashboard</button>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

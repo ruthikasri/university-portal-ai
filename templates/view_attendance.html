@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-body">
+
+<div class="container">
+
+    <h1 class="title">Attendance Records</h1>
+
+    {% if message %}
+    <div class="warning-box">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    <table class="attendance-table">
+        <tr>
+            <th>Date</th>
+            <th>Student Name</th>
+            <th>Status</th>
+        </tr>
+
+        {% for row in records %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+
+            {% if row[2] == 'Present' %}
+                <td class="present">Present</td>
+            {% else %}
+                <td class="absent">Absent</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <a href="/faculty">
+        <button class="primary-btn">Back to Faculty Dashboard</button>
+    </a>
+
+</div>
+
+</body>
+</html>

@@ -64,3 +64,124 @@ th, td {
     padding: 12px 18px;
     border: 1px solid #ccc;
 }
+
+/* Attendance table */
+
+.table-container {
+    width: 80%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.table-container h1 {
+    color: #2c5364;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #2c5364;
+    color: white;
+}
+
+.present {
+    color: green;
+    font-weight: bold;
+}
+
+.absent {
+    color: red;
+    font-weight: bold;
+}
+
+.alert{
+    background:#ffe5e5;
+    color:#b30000;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+}
+
+.container {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+    padding: 30px;
+}
+
+.title {
+    font-size: 40px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+}
+
+.attendance-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+}
+
+.attendance-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.present {
+    color: green;
+    font-weight: bold;
+}
+
+.absent {
+    color: red;
+    font-weight: bold;
+}
+
+.primary-btn {
+    margin-top: 25px;
+    padding: 12px 25px;
+    background: #2e86de;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #1b4f72;
+}
+
+.warning-box {
+    background: #ffe5e5;
+    color: #b30000;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}

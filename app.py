@@ -2,13 +2,21 @@ from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 import PyPDF2
-import csv
 from datetime import datetime
+import mysql.connector
+
+# -------------------- DATABASE CONNECTION FUNCTION --------------------
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Murugan@12",   # <-- your MySQL password
+        database="university_portal"
+    )
 
 # -------------------- APP SETUP --------------------
 app = Flask(__name__)
 
-# Upload folder
 UPLOAD_FOLDER = "uploads"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -16,7 +24,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# -------------------- DUMMY USERS --------------------
+# -------------------- USERS --------------------
 students = {
     "student1": "123"
 }
@@ -30,7 +38,7 @@ faculty_users = {
 def home():
     return render_template('home.html')
 
-# -------------------- LOGIN PAGE --------------------
+# -------------------- LOGIN --------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -61,6 +69,21 @@ def student():
 @app.route('/faculty')
 def faculty_page():
     return render_template('attendance.html')
+
+# -------------------- VIEW ATTENDANCE --------------------
+@app.route('/view_attendance')
+def view_attendance():
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT date, student_name, status FROM attendance ORDER BY date DESC")
+    records = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return render_template('view_attendance.html', records=records, message=None)
 
 # -------------------- PDF TEXT EXTRACTION --------------------
 def extract_text_from_pdf(filepath):
@@ -122,7 +145,7 @@ Final Score: {score}/10
 
     return feedback
 
-# -------------------- UPLOAD + EVALUATION --------------------
+# -------------------- UPLOAD ASSIGNMENT --------------------
 @app.route('/upload', methods=['POST'])
 def upload():
 
@@ -134,12 +157,10 @@ def upload():
     if file.filename == '':
         return "No selected file"
 
-    # Save file
     filename = secure_filename(file.filename)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(filepath)
 
-    # Extract text
     text = extract_text_from_pdf(filepath)
 
     if len(text.strip()) == 0:
@@ -153,20 +174,46 @@ def upload():
 @app.route('/mark_attendance', methods=['POST'])
 def mark_attendance():
 
-    date = datetime.now().strftime("%Y-%m-%d")
+    db = get_db_connection()
+    cursor = db.cursor()
 
-    with open('attendance.csv', 'a', newline='') as file:
-        writer = csv.writer(file)
+    today = datetime.now().strftime("%Y-%m-%d")
 
-        for student in request.form:
-            status = request.form[student]
-            writer.writerow([date, student, status])
+    # Check if attendance already exists
+    cursor.execute("SELECT * FROM attendance WHERE date=%s", (today,))
+    existing = cursor.fetchall()
 
-    return """
-    <h2>Attendance Saved Successfully!</h2>
-    <br>
-    <a href='/faculty'><button>Back to Faculty Page</button></a>
-    """
+    # IF ALREADY TAKEN -> SHOW RECORDS
+    if existing:
+
+        cursor.execute(
+            "SELECT date, student_name, status FROM attendance WHERE date=%s",
+            (today,)
+        )
+        records = cursor.fetchall()
+
+        cursor.close()
+        db.close()
+
+        return render_template(
+            'view_attendance.html',
+            records=records,
+            message="⚠ Attendance already taken for today!"
+        )
+
+    # ELSE INSERT ATTENDANCE
+    for student in request.form:
+        status = request.form[student]
+
+        query = "INSERT INTO attendance (date, student_name, status) VALUES (%s,%s,%s)"
+        cursor.execute(query, (today, student, status))
+
+    db.commit()
+
+    cursor.close()
+    db.close()
+
+    return redirect(url_for('view_attendance'))
 
 # -------------------- RUN SERVER --------------------
 if __name__ == '__main__':

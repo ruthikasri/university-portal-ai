@@ -1,6 +1,22 @@
-venv/
-uploads/
-attendance.csv
+# Python
 __pycache__/
 *.pyc
+
+# Virtual Environment
+venv/
+
+# Environment variables
 .env
+
+# Uploaded files
+uploads/
+
+# Local database files
+attendance.csv
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
