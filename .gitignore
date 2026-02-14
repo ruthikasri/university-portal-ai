@@ -1,0 +1,6 @@
+venv/
+uploads/
+attendance.csv
+__pycache__/
+*.pyc
+.env

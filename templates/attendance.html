@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Attendance</title>
+</head>
+<body style="text-align:center; font-family:Arial; margin-top:50px;">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+<form method="POST" action="/mark_attendance">
+
+<div class="header">Faculty Attendance Panel</div>
+<table border="1" align="center" cellpadding="10">
+<tr>
+    <th>Student Name</th>
+    <th>Present</th>
+    <th>Absent</th>
+</tr>
+
+<tr>
+    <td>student1</td>
+    <td><input type="radio" name="student1" value="Present" required></td>
+    <td><input type="radio" name="student1" value="Absent"></td>
+</tr>
+
+<tr>
+    <td>student2</td>
+    <td><input type="radio" name="student2" value="Present" required></td>
+    <td><input type="radio" name="student2" value="Absent"></td>
+</tr>
+
+<tr>
+    <td>student3</td>
+    <td><input type="radio" name="student3" value="Present" required></td>
+    <td><input type="radio" name="student3" value="Absent"></td>
+</tr>
+
+</table>
+
+<br>
+<button type="submit">Save Attendance</button>
+</form>
+
+</body>
+</html>
